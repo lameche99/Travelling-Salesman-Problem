@@ -1,6 +1,7 @@
 #include "algos.h"
 
-void Approx::primMST(vector<Pair> adjList[], int source){
+void Approx::primMST(int source){
+    vector<vector<Pair> > adjList = this->getAdjList();
     int size = this->getSize();
     vector <bool> visitedVertex(size, false);
     priority_queue<Pair, vector<Pair>, greater<Pair> > PQ; // Set up priority queue
@@ -11,14 +12,22 @@ void Approx::primMST(vector<Pair> adjList[], int source){
         info = PQ.top(); // Use to get minimum weight
         source = info.second; // get the vertex
         PQ.pop(); // Pop before checking for cycles
-        if (visitedVertex.at(source)) // Check for cycle
+        if (visitedVertex.at(source - 1)) // Check for cycle
         continue; // Already accounted for it, move on
-        visitedVertex.at(source) = true; // Else, mark the vertex so that we won't have to visit it again
+        visitedVertex.at(source - 1) = true; // Else, mark the vertex so that we won't have to visit it again
         cout << "Mark vertex " << info.second << " and add weight " << info.first << endl;
         minCost += info.first; // Add to minCos
-        for (vector<Pair>::iterator it = adjList[source].begin(); it != adjList[source].end(); it++) // Visit all children
-        if (!visitedVertex.at(it->second)) // If vertex hasn't been visited already
-            PQ.push(make_pair(it->first, it->second)); // Push vertex and weight onto Priority Queue
-    } // While Priority Queue is not empty
+        vector<Pair> nodes = adjList[source - 1];
+        Pair adj;
+        long long int dist;
+        int vertex;
+        for (int i = 0; i < nodes.size(); i++) {
+            adj = nodes[i];
+            dist = adj.first, vertex = adj.second;
+            if (!visitedVertex.at(vertex - 1)) {
+                PQ.push(adj);
+            }
+        }
+    }
     cout << "Minimum cost to connect all vertices : " << minCost << endl;
 } // PrimsAlgorithm

@@ -4,7 +4,7 @@ int Algorithm::euclid(int x1, int x2, int y1, int y2) {
     double x = x1 - x2;
     double y = y1 - y2;
     double dist = sqrt(pow(x, 2) + pow(y, 2));
-    return int(dist);
+    return int(dist + 0.5);
 }
 
 void Algorithm::read() {
@@ -35,23 +35,29 @@ void Algorithm::read() {
     this->yaxis = yaxis;
 }
 
-void Algorithm::makeAdjList(vector<Pair> adjList[]) {
+void Algorithm::makeAdjList() {
+    vector<vector<Pair> > adjList(this->size, vector<Pair> (this->size));
+    int u, v;
+    long long int x1, x2, y1, y2;
     for (int i = 0; i < this->size; i++)
     {
-        int u = this->ids[i];
-        int x1 = this->xaxis[i], y1 = this->yaxis[i];
+        u = this->ids[i];
+        x1 = this->xaxis[i], y1 = this->yaxis[i];
         int dist;
         for (int j = 0; j < this->size; j++)
         {
-            if (i == j) {
-                adjList[u].push_back(make_pair(0, u));
+            x2 = this->xaxis[j], y2 = this->yaxis[j];
+            v = this->ids[j];
+            if (u == v) {
+                adjList[i][j] = make_pair(0, u);
             } else {
-                int x2 = this->xaxis[j], y2 = this->yaxis[j];
-                int v = this->ids[j];
                 dist = euclid(x1, x2, y1, y2);
-                adjList[u].push_back(make_pair(dist, v));
-                adjList[v].push_back(make_pair(dist, u));
+                Pair way1 = make_pair(dist, v);
+                Pair way2 = make_pair(dist, u);
+                adjList[i][j] = way1;
+                adjList[j][i] = way2;
             }
         }
     }
+    this->adjList = adjList;
 }
