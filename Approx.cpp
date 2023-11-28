@@ -24,7 +24,7 @@ void Approx::primMST(int source){
     size = this->getSize();
     vector<vector<Pair> > mst(size, vector<Pair>(size));
     vector <bool> visitedVertex(size, false);
-    vert = make_pair(source, source - 1);
+    vert = make_pair(source, source - 1); // node is (current, predecessor)
     PQ.push(make_pair(0, vert)); // Source has weight 0;
 
     while (!PQ.empty()){
@@ -47,7 +47,7 @@ void Approx::primMST(int source){
         for (int i = 0; i < nodes.size(); i++) {
             edge = nodes[i];
             if (!visitedVertex.at(edge.second - 1)) {
-                // PQ node has is (edge weight, (next vertex, predecessor))
+                // PQ new node is (edge weight, (next vertex, current vertex))
                 node = make_pair(edge.first, make_pair(edge.second, curr - 1));
                 PQ.push(node);
             }
