@@ -1,13 +1,13 @@
-#include "algos.h"
+#include "util.h"
 
-int Algorithm::euclid(int x1, int x2, int y1, int y2) {
+int Util::euclid(int x1, int x2, int y1, int y2) {
     double x = x1 - x2;
     double y = y1 - y2;
     double dist = sqrt(pow(x, 2) + pow(y, 2));
     return int(dist + 0.5);
 }
 
-void Algorithm::read() {
+void Util::read() {
     ifstream input;
     input.open(this->getInFile());
     vector<int> ids, xaxis, yaxis;
@@ -35,7 +35,7 @@ void Algorithm::read() {
     this->yaxis = yaxis;
 }
 
-void Algorithm::makeAdjList() {
+void Util::makeAdjList() {
     vector<vector<Pair> > adjList(this->size, vector<Pair> (this->size));
     int u, v;
     long long int x1, x2, y1, y2;
@@ -60,4 +60,19 @@ void Algorithm::makeAdjList() {
         }
     }
     this->adjList = adjList;
+}
+
+
+void Util::displayAdjList(vector<vector<Pair> > adjList) {
+    int parent;
+    for (int i = 0; i < this->size; i++) {
+        Pair edge;
+        parent = i + 1;
+        cout << "Node " << parent << ":";
+        for (int j = 0; j < this->size; j ++) {
+            edge = adjList[i][j];
+            cout << " - (" << edge.second << ", " << edge.first << ")";
+        }
+        cout << endl;
+    }
 }

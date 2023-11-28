@@ -1,33 +1,103 @@
-#include "algos.h"
+#include "util.h"
 
+Approx::Approx(string fname, string method, string seed) {
+    setInFile(fname);
+    setMethod(method);
+    setSeed(seed);
+    read();
+    makeAdjList();
+}
+
+Approx::~Approx() {}
+
+// PrimsAlgorithm
 void Approx::primMST(int source){
-    vector<vector<Pair> > adjList = this->getAdjList();
-    int size = this->getSize();
+    vector<vector<Pair> > fullTree;
+    priority_queue<BigPair, vector<BigPair>, greater<BigPair> > PQ; // Set up priority queue
+    int predecessor, cost, curr, size;
+    BigPair info;
+    Pair vert;
+
+    fullTree = this->getAdjList();
+    size = this->getSize();
+    vector<vector<Pair> > mst(size, vector<Pair>(size));
     vector <bool> visitedVertex(size, false);
-    priority_queue<Pair, vector<Pair>, greater<Pair> > PQ; // Set up priority queue
-    Pair info;
-    int minCost = 0;
-    PQ.push(make_pair(0, source)); // Source has weight 0;
+    vert = make_pair(source, source - 1);
+    PQ.push(make_pair(0, vert)); // Source has weight 0;
+
     while (!PQ.empty()){
         info = PQ.top(); // Use to get minimum weight
-        source = info.second; // get the vertex
+        cost = info.first; // get edge weight
+        curr = info.second.first; // get current node
+        predecessor = info.second.second; // get predecessor
         PQ.pop(); // Pop before checking for cycles
-        if (visitedVertex.at(source - 1)) // Check for cycle
-        continue; // Already accounted for it, move on
-        visitedVertex.at(source - 1) = true; // Else, mark the vertex so that we won't have to visit it again
-        cout << "Mark vertex " << info.second << " and add weight " << info.first << endl;
-        minCost += info.first; // Add to minCos
-        vector<Pair> nodes = adjList[source - 1];
-        Pair adj;
-        long long int dist;
-        int vertex;
+
+        if (visitedVertex.at(curr - 1)) // Check for cycle
+            continue; // Already accounted for it, move on
+        
+        visitedVertex.at(curr - 1) = true; // Else, mark the vertex so that we won't have to visit it again
+        if (curr != source)
+            mst[predecessor][curr - 1] = make_pair(cost, curr);
+        
+        Pair edge;
+        BigPair node;
+        vector<Pair> nodes = fullTree[curr - 1];
         for (int i = 0; i < nodes.size(); i++) {
-            adj = nodes[i];
-            dist = adj.first, vertex = adj.second;
-            if (!visitedVertex.at(vertex - 1)) {
-                PQ.push(adj);
+            edge = nodes[i];
+            if (!visitedVertex.at(edge.second - 1)) {
+                // PQ node has is (edge weight, (next vertex, predecessor))
+                node = make_pair(edge.first, make_pair(edge.second, curr - 1));
+                PQ.push(node);
             }
         }
     }
-    cout << "Minimum cost to connect all vertices : " << minCost << endl;
-} // PrimsAlgorithm
+    this->mst = mst;
+}
+
+// Helper to check if node is alread in tour
+bool Approx::isVisited(int source) {
+    for (int i = 0; i < this->tour.size(); i++) {
+        if (source == this->tour[i]) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// Depth first search for optimal tour
+void Approx::dfs(int source) {
+    vector<Pair> nodes;
+    this->tour.push_back(source); // add starting node to the tour
+    nodes = this->mst[source - 1]; // get adjacent nodes in MST
+    for (int j = 0; j < nodes.size(); j++) {
+        if (nodes[j].first != 0 && !isVisited(nodes[j].second)) {
+            dfs(nodes[j].second);
+        }
+    }
+}
+
+// Get quality of tour
+int Approx::tourLength() {
+    vector<vector<Pair> > adjMatrix = this->getAdjList();
+    double quality, cost;
+    int curr, next;
+    for (int i = 0; i < (this->tour.size() - 1); i++) {
+        curr = this->tour[i];
+        next = this->tour[i + 1];
+        cost = adjMatrix[curr - 1][next - 1].first;
+        quality += cost;
+    }
+    return quality;
+}
+
+// TSP Wrapper
+void Approx::tspSolver() {
+    int source = 1;
+    double quality;
+    primMST(source);
+    dfs(source);
+    this->tour.push_back(source);
+    quality = tourLength();
+    setTour(this->tour);
+    setQuality(quality);
+}

@@ -1,5 +1,4 @@
 NAME: berlin52
-TYPE: TSP
 COMMENT: 52 locations in Berlin (Groetschel)
 DIMENSION: 52
 EDGE_WEIGHT_TYPE: EUC_2D
