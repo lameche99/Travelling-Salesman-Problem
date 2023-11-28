@@ -1,5 +1,6 @@
 #include "util.h"
 
+// eucledian distance
 int Util::euclid(int x1, int x2, int y1, int y2) {
     double x = x1 - x2;
     double y = y1 - y2;
@@ -7,6 +8,7 @@ int Util::euclid(int x1, int x2, int y1, int y2) {
     return int(dist + 0.5);
 }
 
+// read input data
 void Util::read() {
     ifstream input;
     input.open(this->getInFile());
@@ -35,6 +37,7 @@ void Util::read() {
     this->yaxis = yaxis;
 }
 
+// Create Adjacency Matrix
 void Util::makeAdjList() {
     vector<vector<Pair> > adjList(this->size, vector<Pair> (this->size));
     int u, v;
@@ -62,7 +65,7 @@ void Util::makeAdjList() {
     this->adjList = adjList;
 }
 
-
+// Print Adj Matrix
 void Util::displayAdjList(vector<vector<Pair> > adjList) {
     int parent;
     for (int i = 0; i < this->size; i++) {
@@ -74,5 +77,23 @@ void Util::displayAdjList(vector<vector<Pair> > adjList) {
             cout << " - (" << edge.second << ", " << edge.first << ")";
         }
         cout << endl;
+    }
+}
+
+// Write Solution File
+void Util::writeSol() {
+    try {
+        ofstream outfile(this->outFile); // open file
+        if (!outfile.is_open()) {
+            throw runtime_error("Could not open file.");
+        }
+        outfile << fixed << this->quality << setprecision(7) << endl; // First line is tour quality
+        for (int i = 0; i < this->tour.size(); i++) {
+            outfile << this->tour[i];
+            if (i != this->tour.size() - 1) {outfile << ",";} // add comma except to last element
+        }
+        outfile.close();
+    } catch (const exception& e) {
+        cerr << "Error: " << e.what() << endl; // Log the error
     }
 }

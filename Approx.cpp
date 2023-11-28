@@ -1,16 +1,18 @@
-#include "util.h"
+#include "approx.h"
 
+// Constructor
 Approx::Approx(string fname, string method, string seed) {
     setInFile(fname);
     setMethod(method);
     setSeed(seed);
     read();
     makeAdjList();
+    setOutFile();
 }
 
 Approx::~Approx() {}
 
-// PrimsAlgorithm
+// Prims Algorithm
 void Approx::primMST(int source){
     vector<vector<Pair> > fullTree;
     priority_queue<BigPair, vector<BigPair>, greater<BigPair> > PQ; // Set up priority queue
@@ -77,7 +79,7 @@ void Approx::dfs(int source) {
 }
 
 // Get quality of tour
-int Approx::tourLength() {
+double Approx::tourLength() {
     vector<vector<Pair> > adjMatrix = this->getAdjList();
     double quality, cost;
     int curr, next;
@@ -92,12 +94,15 @@ int Approx::tourLength() {
 
 // TSP Wrapper
 void Approx::tspSolver() {
-    int source = 1;
+    int source = 1, dims = this->getSize();
+    string verdict;
     double quality;
     primMST(source);
     dfs(source);
     this->tour.push_back(source);
     quality = tourLength();
-    setTour(this->tour);
-    setQuality(quality);
+    this->setTour(this->tour);
+    this->setQuality(quality);
+    verdict = (this->tour.size() - 1) == dims ? "Yes" : "No";
+    this->setVerdict(verdict);
 }
