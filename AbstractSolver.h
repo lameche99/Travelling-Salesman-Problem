@@ -42,10 +42,9 @@ class TspSolver {
         void setMethod(string meth) {this->method = meth;}
         void setCutoff(string cutoff) {this->cutoff = stoi(cutoff);}
         void setSeed(string seed) {this->seed = stoi(seed);}
-        void setVerdict(string verdict) {this->full = verdict;}
         void setSize(int size) {this->size = size;}
-        void setTour(vector<int> tour) {this->tour = tour;}
         void setQuality(double cost) {this->quality = cost;}
+        void setTour(vector<int> tour);
 
     public:
         // Constructor
@@ -67,6 +66,9 @@ class TspSolver {
         vector<int> getYs() {return this->yaxis;}
         vector<int> getTour() {return this->tour;}
         vector<vector<Pair> > getAdjList() {return this->adjList;}
+
+        // compute the length of a tour
+        int computeTourLength(vector<vector<Pair>> adjList, vector<int> tour);
 
         // Input Handling
         void read(); // Read file and extract information

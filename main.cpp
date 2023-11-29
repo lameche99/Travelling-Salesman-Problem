@@ -3,6 +3,10 @@
 #include "BruteForceSolver.cpp"
 #include "LocalSearchSolver.cpp"
 
+#include <iostream>
+#include <chrono> 
+
+
 // main file that runs either of the implemented algorithms
 // to solve the traveling salesman problem (TSP)
 //
@@ -18,7 +22,8 @@
 // "argv[1]_argv[2]_argv[3]_argv[4].sol"
 
 int main(int argc, char** argv) {
-
+    using namespace std;
+    using namespace chrono;
     // create the pointer to a solver
     TspSolver* solver = nullptr;
 
@@ -40,15 +45,16 @@ int main(int argc, char** argv) {
     }
 
     // initialization for execution time measurement
-    time_t start, end;
     double execTime;
 
     // solve the problem
-    time(&start); // start clock
-    ios_base::sync_with_stdio(false);
+    auto start = high_resolution_clock::now();
+    //ios_base::sync_with_stdio(false);
     solver->solve();
-    time(&end); // end clock
-    execTime = double(end - start);
+    auto end = high_resolution_clock::now();
+
+    auto duration = duration_cast<microseconds>(end - start);
+    execTime = duration.count() / 1e6;
 
     // write solution and print results
     solver->writeSol();

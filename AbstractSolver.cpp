@@ -111,3 +111,42 @@ TspSolver::TspSolver(string inFile, string method, string cutoff, string seed) {
     this->makeAdjList();
     this->setOutFile();
 }
+
+// set a tour as the solution of the solver
+void TspSolver::setTour(vector<int> tour) {
+    this->tour = tour;
+
+    // compute quality of the tour
+    this->quality = computeTourLength(getAdjList(), getTour());
+
+    // check whether tour is complete
+    int dims = this->getSize();
+    string isTourFull = (this->tour.size() - 1) == dims ? "Yes" : "No";
+    this->full = isTourFull;
+}
+
+// compute cost of tour with adjacency matrix
+int TspSolver::computeTourLength(vector<vector<Pair>> adjList, vector<int> tour){
+    int cost=0;
+    int u, v;
+    for (int i=0; i<tour.size()-1; i++){
+        u = tour[i];
+        v = tour[i+1];
+        cost = cost + adjList[u-1][v-1].first;
+    }
+    return cost;
+}
+
+// compute cost of tour with adjacency matrix
+// double TspSolver::computeTourLength() {
+//     vector<vector<Pair> > adjMatrix = this->getAdjList();
+//     double quality, cost;
+//     int curr, next;
+//     for (int i = 0; i < (this->tour.size() - 1); i++) {
+//         curr = this->tour[i];
+//         next = this->tour[i + 1];
+//         cost = adjMatrix[curr - 1][next - 1].first;
+//         quality += cost;
+//     }
+//     return quality;
+// }

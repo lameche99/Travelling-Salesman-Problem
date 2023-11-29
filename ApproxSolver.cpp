@@ -71,31 +71,11 @@ void ApproxSolver::dfs(int source) {
     }
 }
 
-// Get quality of tour
-double ApproxSolver::tourLength() {
-    vector<vector<Pair> > adjMatrix = this->getAdjList();
-    double quality, cost;
-    int curr, next;
-    for (int i = 0; i < (this->tour.size() - 1); i++) {
-        curr = this->tour[i];
-        next = this->tour[i + 1];
-        cost = adjMatrix[curr - 1][next - 1].first;
-        quality += cost;
-    }
-    return quality;
-}
-
 // TSP Wrapper
 void ApproxSolver::solve() {
     int source = 1, dims = this->getSize();
-    string verdict;
-    double quality;
     primMST(source);
     dfs(source);
     this->tour.push_back(source);
-    quality = tourLength();
     this->setTour(this->tour);
-    this->setQuality(quality);
-    verdict = (this->tour.size() - 1) == dims ? "Yes" : "No";
-    this->setVerdict(verdict);
 }
