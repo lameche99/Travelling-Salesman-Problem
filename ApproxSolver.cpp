@@ -1,19 +1,12 @@
-#include "approx.h"
+#include "ApproxSolver.h"
 
 // Constructor
-Approx::Approx(string fname, string method, string seed) {
-    setInFile(fname);
-    setMethod(method);
-    setSeed(seed);
-    read();
-    makeAdjList();
-    setOutFile();
+ApproxSolver::ApproxSolver(string fname, string method, string cutoff, string seed) : TspSolver(fname, method, cutoff, seed) {
+    // add something if different from parent class
 }
 
-Approx::~Approx() {}
-
 // Prims Algorithm
-void Approx::primMST(int source){
+void ApproxSolver::primMST(int source){
     vector<vector<Pair> > fullTree;
     priority_queue<BigPair, vector<BigPair>, greater<BigPair> > PQ; // Set up priority queue
     int predecessor, cost, curr, size;
@@ -57,7 +50,7 @@ void Approx::primMST(int source){
 }
 
 // Helper to check if node is alread in tour
-bool Approx::isVisited(int source) {
+bool ApproxSolver::isVisited(int source) {
     for (int i = 0; i < this->tour.size(); i++) {
         if (source == this->tour[i]) {
             return true;
@@ -67,7 +60,7 @@ bool Approx::isVisited(int source) {
 }
 
 // Depth first search for optimal tour
-void Approx::dfs(int source) {
+void ApproxSolver::dfs(int source) {
     vector<Pair> nodes;
     this->tour.push_back(source); // add starting node to the tour
     nodes = this->mst[source - 1]; // get adjacent nodes in MST
@@ -79,7 +72,7 @@ void Approx::dfs(int source) {
 }
 
 // Get quality of tour
-double Approx::tourLength() {
+double ApproxSolver::tourLength() {
     vector<vector<Pair> > adjMatrix = this->getAdjList();
     double quality, cost;
     int curr, next;
@@ -93,7 +86,7 @@ double Approx::tourLength() {
 }
 
 // TSP Wrapper
-void Approx::tspSolver() {
+void ApproxSolver::solve() {
     int source = 1, dims = this->getSize();
     string verdict;
     double quality;

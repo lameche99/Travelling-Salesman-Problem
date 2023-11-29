@@ -12,7 +12,8 @@
 using namespace std;
 typedef pair<double, double> Pair;
 
-class Util {
+// Virtual class that encompasses many useful functions common to all solvers
+class TspSolver {
     private:
         string inFile, outFile, city, method, full;
         int size, cutoff, seed;
@@ -20,24 +21,10 @@ class Util {
         vector<int> ids, xaxis, yaxis, tour;
         vector<vector<Pair> > adjList;
         int euclid(int x1, int x2, int y1, int y2);
-    public:
-        // Getters for private variables
-        string getInFile() {return this->inFile;}
-        string getOutFile() {return this->outFile;}
-        string getCity() {return this->city;}
-        string getMethod() {return this->method;}
-        string getVerdict() {return this->full;}
-        int getCutoff() {return this->cutoff;}
-        int getSeed() {return this->seed;}
-        int getSize() {return this->size;}
-        double getQuality() {return this->quality;}
-        vector<int> getIds() {return this->ids;}
-        vector<int> getXs() {return this->xaxis;}
-        vector<int> getYs() {return this->yaxis;}
-        vector<int> getTour() {return this->tour;}
-        vector<vector<Pair> > getAdjList() {return this->adjList;}
 
-        // Setters for private variables
+    protected:
+        // setters are private
+        // variables are initialized with public init function
         void setInFile(string fname) {this->inFile = fname;}
         void setOutFile() {
             if (this->method == "BF") {
@@ -60,6 +47,27 @@ class Util {
         void setTour(vector<int> tour) {this->tour = tour;}
         void setQuality(double cost) {this->quality = cost;}
 
+    public:
+        // Constructor
+        TspSolver(string inFile, string method, string cutoff, string seed);
+        TspSolver(){};
+
+        // Getters for private variables
+        string getInFile() {return this->inFile;}
+        string getOutFile() {return this->outFile;}
+        string getCity() {return this->city;}
+        string getMethod() {return this->method;}
+        string getVerdict() {return this->full;}
+        int getCutoff() {return this->cutoff;}
+        int getSeed() {return this->seed;}
+        int getSize() {return this->size;}
+        double getQuality() {return this->quality;}
+        vector<int> getIds() {return this->ids;}
+        vector<int> getXs() {return this->xaxis;}
+        vector<int> getYs() {return this->yaxis;}
+        vector<int> getTour() {return this->tour;}
+        vector<vector<Pair> > getAdjList() {return this->adjList;}
+
         // Input Handling
         void read(); // Read file and extract information
         void makeAdjList(); // Create adjacency matrix representation of Graph
@@ -67,6 +75,10 @@ class Util {
 
         // Write Output
         void writeSol();
+
+        // solve the TSP with initialized variables
+        // this is implemented in the children class
+        virtual void solve() = 0;
 };
 
 #endif

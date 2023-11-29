@@ -1,10 +1,10 @@
 #ifndef approx
 #define approx
-#include "util.h"
+#include "AbstractSolver.h"
 
 typedef pair<int, Pair> BigPair;
 
-class Approx : public Util {
+class ApproxSolver : public TspSolver {
     private:
         vector<vector<Pair> > mst;
         vector<int> tour;
@@ -14,10 +14,10 @@ class Approx : public Util {
         double tourLength();
     public:
         // Constructors
-        Approx(string fname, string method, string seed);
-        ~Approx();
+        ApproxSolver(string fname, string method, string cutoff, string seed);
+
         // main function
-        void tspSolver();
+        void solve() override;
 };
 
 #endif

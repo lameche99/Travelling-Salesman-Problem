@@ -1,7 +1,7 @@
-#include "util.h"
+#include "AbstractSolver.h"
 
 // eucledian distance
-int Util::euclid(int x1, int x2, int y1, int y2) {
+int TspSolver::euclid(int x1, int x2, int y1, int y2) {
     double x = x1 - x2;
     double y = y1 - y2;
     double dist = sqrt(pow(x, 2) + pow(y, 2));
@@ -9,7 +9,7 @@ int Util::euclid(int x1, int x2, int y1, int y2) {
 }
 
 // read input data
-void Util::read() {
+void TspSolver::read() {
     ifstream input;
     input.open(this->getInFile()); // open .tsp file
     vector<int> ids, xaxis, yaxis; // vectors to store IDs, X coords and Y coords
@@ -39,7 +39,7 @@ void Util::read() {
 }
 
 // Create Adjacency Matrix
-void Util::makeAdjList() {
+void TspSolver::makeAdjList() {
     // declare adjMatrix as vector of vector of pairs :(weight, vertex)
     // adjList[u_id - 1][v_id - 1] = (weight, v_id) -> weight for (u_id, v_id) edge
     vector<vector<Pair> > adjList(this->size, vector<Pair> (this->size));
@@ -69,7 +69,7 @@ void Util::makeAdjList() {
 }
 
 // Print Adj Matrix
-void Util::displayAdjList(vector<vector<Pair> > adjList) {
+void TspSolver::displayAdjList(vector<vector<Pair> > adjList) {
     int parent;
     for (int i = 0; i < this->size; i++) {
         Pair edge;
@@ -84,7 +84,7 @@ void Util::displayAdjList(vector<vector<Pair> > adjList) {
 }
 
 // Write Solution File
-void Util::writeSol() {
+void TspSolver::writeSol() {
     try {
         ofstream outfile(this->outFile); // open file
         if (!outfile.is_open()) {
@@ -99,4 +99,15 @@ void Util::writeSol() {
     } catch (const exception& e) {
         cerr << "Error: " << e.what() << endl; // Log the error
     }
+}
+
+// constructor
+TspSolver::TspSolver(string inFile, string method, string cutoff, string seed) {
+    this->setInFile(inFile);
+    this->setMethod(method);
+    this->setCutoff(cutoff);
+    this->setSeed(seed);
+    this->read();
+    this->makeAdjList();
+    this->setOutFile();
 }
