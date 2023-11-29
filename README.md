@@ -9,6 +9,3 @@ This generic interface allows every team member to work separately effectively w
 1) BfSolver: a brute force approach that terminates after a given time cutoff.
 2) ApproxSolver: an approximation to the solution with some quality boundaries.
 3) LsSolver: a local search that uses heuristics.
-
-4) 
-
