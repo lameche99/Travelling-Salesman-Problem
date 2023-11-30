@@ -1,7 +1,7 @@
 #include "AbstractSolver.h"
 
 // eucledian distance
-int TspSolver::euclid(double x1, double x2, double y1, double y2) {
+int TspSolver::euclid(int x1, int x2, int y1, int y2) {
     double x = x1 - x2;
     double y = y1 - y2;
     double dist = sqrt(pow(x, 2) + pow(y, 2));
@@ -44,7 +44,7 @@ void TspSolver::makeAdjList() {
     // adjList[u_id - 1][v_id - 1] = (weight, v_id) -> weight for (u_id, v_id) edge
     vector<vector<Pair> > adjList(this->size, vector<Pair> (this->size));
     int u, v;
-    double x1, x2, y1, y2;
+    long long int x1, x2, y1, y2;
     for (int i = 0; i < this->size; i++)
     {
         u = this->ids[i]; // u is the location ID -> u = i + 1
@@ -121,18 +121,18 @@ void TspSolver::setTour(vector<int> tour) {
 
     // check whether tour is complete
     int dims = this->getSize();
-    string isTourFull = (this->tour.size() - 1) == dims ? "Yes" : "No missing: " + to_string(dims - (this->tour.size() - 1));
+    string isTourFull = (this->tour.size() - 1) == dims ? "Yes" : "No";
     this->full = isTourFull;
 }
 
 // compute cost of tour with adjacency matrix
-int TspSolver::computeTourLength(vector<vector<Pair> > adjList, vector<int> tour){
+int TspSolver::computeTourLength(vector<vector<Pair>> adjList, vector<int> tour){
     int cost=0;
     int u, v;
     for (int i=0; i<tour.size()-1; i++){
         u = tour[i];
         v = tour[i+1];
-        cost = cost + adjList[u-1][v-1].first;
+        cost += adjList[u-1][v-1].first;
     }
     return cost;
 }
