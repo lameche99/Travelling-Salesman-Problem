@@ -7,9 +7,18 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <thread>
+#include <chrono>
+#include <iomanip>
+#include <limits>
 #include <queue>
 #include <functional>
+#include <algorithm>
+#include <random>
+#define DEBUG false
 using namespace std;
+using namespace chrono;
+
 typedef pair<double, double> Pair;
 
 // Virtual class that encompasses many useful functions common to all solvers
