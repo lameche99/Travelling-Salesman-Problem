@@ -56,7 +56,8 @@ pair<int, vector<int> > BfSolver::bruteForceTSP_10(const vector<vector<Pair> >& 
 
         // Add the weight of the last edge to complete the cycle
         current_path += adjMat[allPermutations[permutationCounter][numNodes - 1] - 1][allPermutations[permutationCounter][0] - 1].first;
-        
+        min_path_nodes.push_back(adjMat[allPermutations[permutationCounter][numNodes - 1] - 1][allPermutations[permutationCounter][0] - 1].second);
+
         // Update the minimum path if the current path is smaller
         if (current_path < min_path) {
             min_path = current_path;
@@ -172,6 +173,7 @@ pair<int, vector<int> > BfSolver::bruteForceTSP_11(const vector<vector<Pair> >& 
 
         // Add the weight of the last edge to complete the cycle
         current_path += adjMat[permutation[numNodes - 1] - 1][permutation[0] - 1].first;
+        permutation.push_back(adjMat[permutation[numNodes - 1] - 1][permutation[0] - 1].second);
 
         // Update the minimum path if the current path is smaller
         if (current_path < min_path) {
