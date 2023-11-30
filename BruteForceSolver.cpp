@@ -146,8 +146,8 @@ pair<int, vector<int> > BfSolver::bruteForceTSP_11(const vector<vector<Pair> >& 
     vector<int> min_path_nodes(numNodes);
 
     // Counter to keep track of processed permutations
-    long long int permutationCounter = 0;
-    long long double permutationUpperBound = tgamma(numNodes + 1);
+    long int permutationCounter = 0;
+    long double permutationUpperBound = tgamma(numNodes + 1);
 
     do {
         // Randomize the order of vertices using the provided seed
