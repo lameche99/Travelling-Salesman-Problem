@@ -15,6 +15,7 @@
 #include <functional>
 #include <algorithm>
 #include <random>
+#include <cstring>
 #define DEBUG false
 using namespace std;
 using namespace chrono;
