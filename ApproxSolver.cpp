@@ -27,12 +27,12 @@ void ApproxSolver::primMST(int source){
         predecessor = info.second.second; // get predecessor
         PQ.pop(); // Pop before checking for cycles
 
-        if (visitedVertex.at(curr - 1)) // Check for cycle
-            continue; // Already accounted for it, move on
+        if (visitedVertex.at(curr - 1)) {continue;} // Check for cycle
+        // Already accounted for it, move on
         
         visitedVertex.at(curr - 1) = true; // Else, mark the vertex so that we won't have to visit it again
-        if (curr != source)
-            mst[predecessor][curr - 1] = make_pair(cost, curr);
+        mst[predecessor][curr - 1] = make_pair(cost, curr);
+        mst[curr - 1][predecessor] = make_pair(cost, predecessor + 1);
         
         Pair edge;
         BigPair node;
@@ -65,7 +65,7 @@ void ApproxSolver::dfs(int source) {
     this->tour.push_back(source); // add starting node to the tour
     nodes = this->mst[source - 1]; // get adjacent nodes in MST
     for (int j = 0; j < nodes.size(); j++) {
-        if (nodes[j].first != 0 && !isVisited(nodes[j].second)) {
+        if (nodes[j].second != 0 && !isVisited(nodes[j].second)) {
             dfs(nodes[j].second);
         }
     }
@@ -75,6 +75,7 @@ void ApproxSolver::dfs(int source) {
 void ApproxSolver::solve() {
     int source = 1, dims = this->getSize();
     primMST(source);
+    // displayAdjList(this->mst);
     dfs(source);
     this->tour.push_back(source);
     this->setTour(this->tour);

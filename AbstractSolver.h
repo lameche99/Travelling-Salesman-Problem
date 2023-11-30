@@ -30,7 +30,7 @@ class TspSolver {
         double quality;
         vector<int> ids, xaxis, yaxis, tour;
         vector<vector<Pair> > adjList;
-        int euclid(int x1, int x2, int y1, int y2);
+        int euclid(double x1, double x2, double y1, double y2);
 
     protected:
         // setters are private
