@@ -85,7 +85,8 @@ pair<int, vector<int> > BfSolver::bruteForceTSP_10(const vector<vector<Pair> >& 
     if (DEBUG) {
     cout << "Loop finished after: " << duration << " seconds" << endl;
     }
-
+    
+    // Add the first edge at the end of the path to complete the cycle
     min_path_nodes.push_back(min_path_nodes[0]);
 
     return make_pair(min_path, min_path_nodes);
@@ -203,6 +204,7 @@ pair<int, vector<int> > BfSolver::bruteForceTSP_11(const vector<vector<Pair> >& 
         cout << "Loop finished after: " << duration << " seconds" << endl;
     }
     
+    // Add the first edge at the end of the path to complete the cycle
     min_path_nodes.push_back(min_path_nodes[0]);
 
     return make_pair(min_path, min_path_nodes);
