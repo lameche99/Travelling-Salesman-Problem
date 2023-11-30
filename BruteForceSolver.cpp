@@ -56,7 +56,6 @@ pair<int, vector<int> > BfSolver::bruteForceTSP_10(const vector<vector<Pair> >& 
 
         // Add the weight of the last edge to complete the cycle
         current_path += adjMat[allPermutations[permutationCounter][numNodes - 1] - 1][allPermutations[permutationCounter][0] - 1].first;
-        min_path_nodes.push_back(adjMat[allPermutations[permutationCounter][numNodes - 1] - 1][allPermutations[permutationCounter][0] - 1].second);
 
         // Update the minimum path if the current path is smaller
         if (current_path < min_path) {
@@ -85,7 +84,9 @@ pair<int, vector<int> > BfSolver::bruteForceTSP_10(const vector<vector<Pair> >& 
 
     if (DEBUG) {
     cout << "Loop finished after: " << duration << " seconds" << endl;
-    } 
+    }
+
+    min_path_nodes.push_back(min_path_nodes[0]);
 
     return make_pair(min_path, min_path_nodes);
 }
@@ -145,8 +146,8 @@ pair<int, vector<int> > BfSolver::bruteForceTSP_11(const vector<vector<Pair> >& 
     vector<int> min_path_nodes(numNodes);
 
     // Counter to keep track of processed permutations
-    int permutationCounter = 0;
-    double permutationUpperBound = tgamma(numNodes + 1);
+    long long int permutationCounter = 0;
+    long long double permutationUpperBound = tgamma(numNodes + 1);
 
     do {
         // Randomize the order of vertices using the provided seed
@@ -173,7 +174,6 @@ pair<int, vector<int> > BfSolver::bruteForceTSP_11(const vector<vector<Pair> >& 
 
         // Add the weight of the last edge to complete the cycle
         current_path += adjMat[permutation[numNodes - 1] - 1][permutation[0] - 1].first;
-        permutation.push_back(adjMat[permutation[numNodes - 1] - 1][permutation[0] - 1].second);
 
         // Update the minimum path if the current path is smaller
         if (current_path < min_path) {
@@ -202,6 +202,8 @@ pair<int, vector<int> > BfSolver::bruteForceTSP_11(const vector<vector<Pair> >& 
     if (DEBUG) {
         cout << "Loop finished after: " << duration << " seconds" << endl;
     }
+    
+    min_path_nodes.push_back(min_path_nodes[0]);
 
     return make_pair(min_path, min_path_nodes);
 }
