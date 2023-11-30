@@ -68,7 +68,7 @@ class TspSolver {
         vector<vector<Pair> > getAdjList() {return this->adjList;}
 
         // compute the length of a tour
-        int computeTourLength(vector<vector<Pair>> adjList, vector<int> tour);
+        int computeTourLength(vector<vector<Pair> > adjList, vector<int> tour);
 
         // Input Handling
         void read(); // Read file and extract information

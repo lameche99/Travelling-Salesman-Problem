@@ -126,7 +126,7 @@ void TspSolver::setTour(vector<int> tour) {
 }
 
 // compute cost of tour with adjacency matrix
-int TspSolver::computeTourLength(vector<vector<Pair>> adjList, vector<int> tour){
+int TspSolver::computeTourLength(vector<vector<Pair> > adjList, vector<int> tour){
     int cost=0;
     int u, v;
     for (int i=0; i<tour.size()-1; i++){

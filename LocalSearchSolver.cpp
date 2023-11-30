@@ -14,7 +14,7 @@ void LsSolver::solve() {
     setTour(bestTour.first);
 }
 
-pair<vector<int>,int> LsSolver::runLocalSearch(vector<vector<Pair>> adjList){
+pair<vector<int>,int> LsSolver::runLocalSearch(vector<vector<Pair> > adjList){
     // declare constants of simulated annealing algorithm
     double k = 20;
     double T = 100;
