@@ -7,19 +7,9 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <thread>
-#include <chrono>
-#include <iomanip>
-#include <limits>
 #include <queue>
 #include <functional>
-#include <algorithm>
-#include <random>
-#include <cstring>
-#define DEBUG false
 using namespace std;
-using namespace chrono;
-
 typedef pair<double, double> Pair;
 
 // Virtual class that encompasses many useful functions common to all solvers
@@ -30,7 +20,7 @@ class TspSolver {
         double quality;
         vector<int> ids, xaxis, yaxis, tour;
         vector<vector<Pair> > adjList;
-        int euclid(double x1, double x2, double y1, double y2);
+        int euclid(int x1, int x2, int y1, int y2);
 
     protected:
         // setters are private
@@ -38,12 +28,12 @@ class TspSolver {
         void setInFile(string fname) {this->inFile = fname;}
         void setOutFile() {
             if (this->method == "BF") {
-                this->outFile = "./output/BF/" + getCity() + '_' + getMethod() + '_' + to_string(getCutoff()) + "_" + to_string(getSeed()) + ".sol";
+                this->outFile = "./output/" + getCity() + '_' + getMethod() + '_' + to_string(getCutoff()) + ".sol";
             } else if (this->method == "Approx")
             {
-                this->outFile = "./output/Approx/" + getCity() + '_' + getMethod() + '_' + to_string(getSeed()) + ".sol";
+                this->outFile = "./output/" + getCity() + '_' + getMethod() + '_' + to_string(getSeed()) + ".sol";
             } else if (this->method == "LS") {
-                this->outFile = "./output/LS/" + getCity() + '_' + getMethod() + '_' + to_string(getCutoff()) + '_' + to_string(getSeed()) + ".sol";
+                this->outFile = "./output/" + getCity() + '_' + getMethod() + '_' + to_string(getCutoff()) + '_' + to_string(getSeed()) + ".sol";
             } else {
                 cout << "Invalid Method. Try again." << endl;
             }    
@@ -78,7 +68,9 @@ class TspSolver {
         vector<vector<Pair> > getAdjList() {return this->adjList;}
 
         // compute the length of a tour
-        int computeTourLength(vector<vector<Pair> > adjList, vector<int> tour);
+        //int computeTourLength(vector<vector<Pair>> adjList, vector<int> tour);
+
+        inline int computeTourLength(const vector<vector<Pair>>& adjList,const vector<int>& tour);
 
         // Input Handling
         void read(); // Read file and extract information

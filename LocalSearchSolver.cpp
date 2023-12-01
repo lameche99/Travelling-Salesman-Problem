@@ -21,27 +21,13 @@ pair<vector<int>,int> LsSolver::runLocalSearch(vector<vector<Pair>> adjList){
     using namespace chrono;
 
     double probSize = getSize();
-    // declare constants of simulated annealing algorithm
-    double T;
-    if (probSize < 60) {
-        T = 0.2;
-    } else {
-        T = 1; // higher temperature for larger problems
-    }
-    int nsteps = 3000000;
+    int nsteps = 10000000;
+    double T = max(0.1, 0.016 * (probSize-50) + 0.2); // increase T with problem size
     int M = 5;  // lower temperature every M steps
-    double coolingFactor = 0.9999;  // ratio by which we reduce temperature
+    double coolingFactor = min(1.25e-5*(probSize-50) + 0.99995, 0.99999);  // ratio by which we reduce temperature
     int maxCountNoChange = max(1000. * (probSize-10 + 1), 1000.); // if algo does not accept new points for a certain amount of steps, then stop
     int nNewTours = 3;
-    double swapPairProb = 0.90; // probability to swap pair over changing node
-
-    // int nsteps = 3000000;
-    // double T = max(0.1, 0.016 * (probSize-50) + 0.2); // increase T with problem size
-    // int M = 5;  // lower temperature every M steps
-    // double coolingFactor = min(1.25e-5*(probSize-50) + 0.99995, 0.99999);  // ratio by which we reduce temperature
-    // int maxCountNoChange = max(1000. * (probSize-10 + 1), 1000.); // if algo does not accept new points for a certain amount of steps, then stop
-    // int nNewTours = 3;
-    // double swapPairProb = 0.9; // probability to swap pair over changing node
+    double swapPairProb = 0.9; // probability to swap pair over changing node
 
 
     // higher number of maxCountNoChange for higher dimension problems

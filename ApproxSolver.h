@@ -15,7 +15,7 @@ class ApproxSolver : public TspSolver {
     public:
         // Constructors
         ApproxSolver(string fname, string method, string cutoff, string seed);
-
+        
         // main function
         void solve() override;
 };
