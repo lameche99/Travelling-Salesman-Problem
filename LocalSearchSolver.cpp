@@ -33,13 +33,15 @@ pair<vector<int>,int> LsSolver::runLocalSearch(vector<vector<Pair>> adjList){
     double coolingFactor = 0.9999;  // ratio by which we reduce temperature
     int maxCountNoChange = max(1000. * (probSize-10 + 1), 1000.); // if algo does not accept new points for a certain amount of steps, then stop
     int nNewTours = 3;
+    double swapPairProb = 0.90; // probability to swap pair over changing node
 
-    // double T = 2.0; // 5
     // int nsteps = 3000000;
+    // double T = max(0.1, 0.016 * (probSize-50) + 0.2); // increase T with problem size
     // int M = 5;  // lower temperature every M steps
-    // double coolingFactor = 0.9995;  // ratio by which we reduce temperature
+    // double coolingFactor = min(1.25e-5*(probSize-50) + 0.99995, 0.99999);  // ratio by which we reduce temperature
     // int maxCountNoChange = max(1000. * (probSize-10 + 1), 1000.); // if algo does not accept new points for a certain amount of steps, then stop
     // int nNewTours = 3;
+    // double swapPairProb = 0.9; // probability to swap pair over changing node
 
 
     // higher number of maxCountNoChange for higher dimension problems
@@ -48,6 +50,11 @@ pair<vector<int>,int> LsSolver::runLocalSearch(vector<vector<Pair>> adjList){
     // declare tour and cost of tour variables that will be updated iteratively
     vector<int> tour;
     int costTour;
+
+    vector<int> bestTour;
+    int costBestTour;
+    
+
     int seed = getSeed();
     std::mt19937 engine(seed);  // will pass Random Number Generator (RNG) engine to functions that use randomness
 
@@ -58,10 +65,25 @@ pair<vector<int>,int> LsSolver::runLocalSearch(vector<vector<Pair>> adjList){
     int t = 0;
     double execTime;
     while ( (t<nsteps) && (execTime<getCutoff()) && (countNoChange < maxCountNoChange)){
-        vector<int> newTour = swap_random_pair(tour, engine);
+
+        uniform_real_distribution<> uniform(0.0, 1.0);
+        double r = uniform(engine);
+        vector<int> newTour;
+        if (r<swapPairProb) {
+            newTour = swap_random_pair(tour, engine);
+        } else{
+            newTour = move_random_node(tour, engine);
+        }
+        
         // add extra swaps at the beginning
         for(int otherswaps = 0; otherswaps <= (nNewTours-t*2./maxCountNoChange); otherswaps++) {
-            newTour = swap_random_pair(newTour, engine);
+                uniform_real_distribution<> uniform(0.0, 1.0);
+                double r = uniform(engine);
+            if (r<swapPairProb) {
+                 newTour = swap_random_pair(tour, engine);
+            } else{
+                newTour = move_random_node(tour, engine);
+            }
         }   
 
         int costNewTour = computeTourLength(adjList, newTour);
@@ -72,6 +94,8 @@ pair<vector<int>,int> LsSolver::runLocalSearch(vector<vector<Pair>> adjList){
         if (deltaE < 0){
             tour = newTour;
             costTour = costNewTour;
+            bestTour = tour;
+            costBestTour = costTour;
             countNoChange = 0;
         } else { // deltaE >= 0
             deltaE = deltaE / costTour; // normalize deltaE so it is unitless (in percent of regular tour)
@@ -113,7 +137,7 @@ pair<vector<int>,int> LsSolver::runLocalSearch(vector<vector<Pair>> adjList){
     // for (int v : tour)
     //     cout<<v<<" ";
     // cout<<endl;
-    pair<vector<int>,int> tourCostPair = make_pair(tour, costTour);
+    pair<vector<int>,int> tourCostPair = make_pair(bestTour, costBestTour);
     return tourCostPair;
 }
 
@@ -139,6 +163,28 @@ vector<int> LsSolver::swap_random_pair(vector<int> tour, std::mt19937 engine){
         idx2 = distribution(engine);
 
     iter_swap(tour.begin() + idx1, tour.begin() + idx2);  // swap 2 indices in vector
+    tour.push_back(tour[0]);
+    return tour;
+}
+
+vector<int> LsSolver::move_random_node(vector<int> tour, std::mt19937 engine){
+    int seed = getSeed();
+    tour.pop_back();  // ignore last node (same as first) to select 2 random indices
+    uniform_int_distribution<int> distribution(0, tour.size()-1);
+    int idx1 = distribution(engine);
+    int idx2 = distribution(engine);
+    while (idx2 == idx1)
+        idx2 = distribution(engine);
+
+    // Extract the node at idx1
+    int nodeToMove = tour[idx1];
+
+    // Erase the node at idx1
+    tour.erase(tour.begin() + idx1);
+
+    // Insert the node at idx2
+    tour.insert(tour.begin() + idx2, nodeToMove);
+
     tour.push_back(tour[0]);
     return tour;
 }
