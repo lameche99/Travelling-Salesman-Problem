@@ -1,4 +1,11 @@
 #include "BruteForceSolver.h"
+#include <iostream>
+#include <chrono> 
+#include <random>
+
+using namespace std;
+using namespace chrono;
+
 
 // Constructor
 BfSolver::BfSolver(string fname, string method, string cutoff, string seed) : TspSolver(fname, method, cutoff, seed) {
@@ -25,6 +32,10 @@ void BfSolver::solve() {
 // - time_constraint: Time limit for the algorithm.
 // - seed: Seed for random number generation.
 pair<int, vector<int> > BfSolver::bruteForceTSP_10(const vector<vector<Pair> >& adjMat, int numNodes, double time_constraint, unsigned seed) {
+
+
+    bool DEBUG = false;
+
     // Generate all permutations
     vector<vector<int> > allPermutations = generatePermutations(numNodes);
 
@@ -76,7 +87,6 @@ pair<int, vector<int> > BfSolver::bruteForceTSP_10(const vector<vector<Pair> >& 
         // Print debugging information
         cout << "Current Path: " << current_path << " | Elapsed Time: " << duration << " seconds" << endl;
         }
-
         // Uncomment the following line if you want to add a delay
         // this_thread::sleep_for(milliseconds(100));
 
@@ -130,9 +140,14 @@ void BfSolver::shufflePermutations(vector<vector<int> >& permutations, unsigned 
 // Function to solve the TSP with a Brute Force algorithm for large graphs (|V| > 10)
 pair<int, vector<int> > BfSolver::bruteForceTSP_11(const vector<vector<Pair> >& adjMat, int numNodes, double time_constraint, unsigned seed) {
     // Generate an initial permutation
+    using namespace std;
+    using namespace chrono;
+
     vector<int> permutation;
     for (int i=0; i<numNodes; i++)
         permutation.push_back(i + 1);
+
+    bool DEBUG = false;
 
     // Use the provided seed for randomness
     mt19937 g(seed);
@@ -184,7 +199,7 @@ pair<int, vector<int> > BfSolver::bruteForceTSP_11(const vector<vector<Pair> >& 
 
         // Increment the counter
         permutationCounter++;
-
+        
         // Update the end time
         end = high_resolution_clock::now();
 
