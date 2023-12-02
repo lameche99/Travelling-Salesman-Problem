@@ -15,14 +15,14 @@ class LsSolver : public TspSolver {
         void solve() override;
 
         // local search
-        pair<vector<int>,int> runLocalSearch(vector<vector<Pair>> adjList);
+        pair<vector<int>,int> runLocalSearch(vector<vector<Pair> > adjList);
 
         vector<int> select_random_tour(std::mt19937 engine);
 
         vector<int> swap_random_pair(vector<int> tour, std::mt19937 engine);
         vector<int> move_random_node(vector<int> tour, std::mt19937 engine);
 
-        int get_cost_tour(vector<vector<Pair>> adjList, vector<int> tour);
+        int get_cost_tour(vector<vector<Pair> > adjList, vector<int> tour);
 
 };
 

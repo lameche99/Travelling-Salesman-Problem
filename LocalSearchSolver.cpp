@@ -16,7 +16,7 @@ void LsSolver::solve() {
     setTour(bestTour.first);
 }
 
-pair<vector<int>,int> LsSolver::runLocalSearch(vector<vector<Pair>> adjList){
+pair<vector<int>,int> LsSolver::runLocalSearch(vector<vector<Pair> > adjList){
     using namespace std;
     using namespace chrono;
 
