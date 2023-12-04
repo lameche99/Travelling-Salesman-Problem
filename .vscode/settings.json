@@ -2,6 +2,7 @@
     "files.associations": {
         "vector": "cpp",
         "iosfwd": "cpp",
-        "iomanip": "cpp"
+        "iomanip": "cpp",
+        "utility": "cpp"
     }
 }
