@@ -9,9 +9,9 @@
 #include <sstream>
 #include <queue>
 #include <functional>
-#include<iomanip>
-#include<algorithm>
-#include<cstring>
+#include <iomanip>
+#include <algorithm>
+#include <cstring>
 #include <climits>
 using namespace std;
 typedef pair<double, double> Pair;
