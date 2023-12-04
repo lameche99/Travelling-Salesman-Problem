@@ -137,7 +137,7 @@ void TspSolver::setTour(vector<int> tour) {
 //     return cost;
 // }
 
-inline int TspSolver::computeTourLength(const vector<vector<Pair>>& adjList, const vector<int>& tour) {
+inline int TspSolver::computeTourLength(const vector<vector<Pair> >& adjList, const vector<int>& tour) {
     int cost = 0;
     size_t tourSize = tour.size();
 
