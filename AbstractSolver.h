@@ -30,12 +30,12 @@ class TspSolver {
         void setInFile(string fname) {this->inFile = fname;}
         void setOutFile() {
             if (this->method == "BF") {
-                this->outFile = "./" + getCity() + '_' + getMethod() + '_' + to_string(getCutoff()) + ".sol";
+                this->outFile = "./output/BF/" + getCity() + '_' + getMethod() + '_' + to_string(getCutoff()) + ".sol";
             } else if (this->method == "Approx")
             {
-                this->outFile = "./" + getCity() + '_' + getMethod() + '_' + to_string(getSeed()) + ".sol";
+                this->outFile = "./output/Approx/" + getCity() + '_' + getMethod() + '_' + to_string(getSeed()) + ".sol";
             } else if (this->method == "LS") {
-                this->outFile = "./" + getCity() + '_' + getMethod() + '_' + to_string(getCutoff()) + '_' + to_string(getSeed()) + ".sol";
+                this->outFile = "./output/LS/" + getCity() + '_' + getMethod() + '_' + to_string(getCutoff()) + '_' + to_string(getSeed()) + ".sol";
             } else {
                 cout << "Invalid Method. Try again." << endl;
             }    
@@ -70,7 +70,6 @@ class TspSolver {
         vector<vector<Pair> > getAdjList() {return this->adjList;}
 
         // compute the length of a tour
-        //int computeTourLength(vector<vector<Pair>> adjList, vector<int> tour);
 
         inline int computeTourLength(const vector<vector<Pair> >& adjList,const vector<int>& tour);
 

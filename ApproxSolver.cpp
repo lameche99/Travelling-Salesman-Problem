@@ -73,10 +73,35 @@ void ApproxSolver::dfs(int source) {
 
 // TSP Wrapper
 void ApproxSolver::solve() {
-    int source = 1, dims = this->getSize();
-    primMST(source);
-    // displayAdjList(this->mst);
-    dfs(source);
-    this->tour.push_back(source);
-    this->setTour(this->tour);
+    vector<int> ids;
+    ids = this->getIds();
+    double cutoff = this->getCutoff();
+    int source, optQuality;
+    // Set an upper bound for the time in place (exit condition)
+    time_point<high_resolution_clock> start = high_resolution_clock::now();
+    time_point<high_resolution_clock> end = high_resolution_clock::now();
+    double duration = duration_cast<seconds>(end - start).count();
+
+    optQuality = INT_MAX;
+    while (duration < cutoff)
+    {
+        int q;
+        for (int i = 0; i < ids.size(); i++) {
+            source = ids[i];
+            primMST(source);
+            // displayAdjList(this->mst);
+            dfs(source);
+            this->tour.push_back(source);
+            q = this->computeTourLength(this->getAdjList(), this->tour);
+            if (q < optQuality) {
+                optQuality = q;
+                this->setTour(this->tour);
+            }
+        }   
+    }
+    
+    
+    
+    
+    
 }
