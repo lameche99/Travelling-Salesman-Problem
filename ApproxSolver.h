@@ -1,7 +1,7 @@
 #ifndef approx
 #define approx
 #include "AbstractSolver.h"
-
+using namespace chrono;
 typedef pair<int, Pair> BigPair;
 
 class ApproxSolver : public TspSolver {
