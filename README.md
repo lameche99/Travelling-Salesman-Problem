@@ -5,7 +5,7 @@ This library, developed for a class project, can be used to solve the traveling 
 - Second, a fast approximation with provable guarantees using Prim's algorithm.
 - Third, simulated annealing, which has no provable guarantees but can often find a great estimate if well implemented.
 
-Results, tested on well-known TSP, show that our simulated annealing approach consistently gives the best tours at a low cost.
+Results, tested on well-known TSP, show that our simulated annealing approach consistently gives the best tours and scales well on larger problems.
 
 ![plot](./Boston_subplots.png)
 ![plot](./Toronto_subplots.png)
