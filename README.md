@@ -1,5 +1,5 @@
 # Traveling Salesman Problem Solvers
-This library, developed for a class project, can be used to solve the traveling salesman problem (TSP). We have implemented three ways:
+This C++ library, developed for a class project, can be used to solve the traveling salesman problem (TSP). We have implemented three ways:
 
 - First, brute force, which can find the global minimum for which the problem quickly becomes intractable.
 - Second, a fast approximation with provable guarantees using Prim's algorithm.
